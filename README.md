@@ -1,2 +1,3 @@
+# Part 1
 
-# part1
+All exercises done.
