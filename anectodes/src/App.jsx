@@ -4,7 +4,8 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Display = ({ text }) => <p>{text}</p>;
+const Display = ({ type, text }) =>
+  type == "title" ? <h1>{text}</h1> : <p>{text}</p>;
 
 const App = () => {
   const anecdotes = [
@@ -21,9 +22,8 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
-  const nextAnectode = () => {
+  const nextanecdote = () => {
     const random = Math.floor(Math.random() * anecdotes.length);
-    console.log(random);
     setSelected(random);
   };
 
@@ -33,12 +33,31 @@ const App = () => {
     setVotes(copy);
   };
 
+  const mostVoted = () => {
+    let maxVotes = 0;
+    let maxIndex = 0;
+
+    for (let i = 0; i < votes.length; i++) {
+      if (votes[i] > maxVotes) {
+        maxVotes = votes[i];
+        maxIndex = i;
+      }
+    }
+
+    return maxIndex;
+  };
+
   return (
     <div>
+      <Display type="title" text="anecdote of the day" />
       <Display text={anecdotes[selected]} />
       <Display text={`has ${votes[selected]} votes`} />
       <Button handleClick={vote} text="vote" />
-      <Button handleClick={nextAnectode} text="next anectode" />
+      <Button handleClick={nextanecdote} text="next anecdote" />
+
+      <Display type="title" text="anecdote with most votes" />
+      <Display text={anecdotes[mostVoted()]} />
+      <Display text={`has ${votes[mostVoted()]} votes`} />
     </div>
   );
 };
